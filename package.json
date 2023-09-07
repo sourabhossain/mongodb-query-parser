@@ -1,0 +1,27 @@
+{
+    "name": "mongodb-query-parser",
+    "version": "1.0.0",
+    "main": "mongodbQueryParser.js",
+    "repository": "git@github.com:sourabhossain/mongodb-query-parser.git",
+    "author": "Sourab Hossain <sourabhossain.fci@gmail.com>",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "format": "prettier --write \"**/*.js\"",
+        "lint": "eslint .",
+        "precommit": "npm run lint && npm run format"
+    },
+    "keywords": [
+        "mongodb",
+        "query",
+        "parser"
+    ],
+    "dependencies": {
+        "mongodb": "^6.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.48.0",
+        "eslint-plugin-node": "^11.1.0",
+        "prettier": "^3.0.3"
+    }
+}
