@@ -2,7 +2,7 @@
 
 import { ObjectId } from 'mongodb';
 
-const operators = {
+const MONGODB_OPERATORS = {
     gt: '$gt',      // Greater Than
     gte: '$gte',    // Greater Than or Equal To
     lt: '$lt',      // Less Than
@@ -22,8 +22,7 @@ const operators = {
 
 const parseQueryToJSON = (query) => {
     const queryJSONString = decodeURIComponent(query);
-    const parsedJSON = JSON.parse(queryJSONString);
-    return parsedJSON;
+    return JSON.parse(queryJSONString);
 };
 
 const replaceKeyWithMongoDBOperator = (json, key, operator) => {
@@ -45,7 +44,7 @@ const recursiveKeyReplacement = (json) => {
             });
         }
 
-        const operator = operators[key];
+        const operator = MONGODB_OPERATORS[key];
 
         if (json[key] !== null && typeof json[key] === 'object') {
             if (operator) {
@@ -61,16 +60,14 @@ const recursiveKeyReplacement = (json) => {
 };
 
 const formatLookupQuery = (query) => {
-    if (!query?.as) {
-        query.as = `${query?.model?.charAt(0).toLowerCase() + query?.model?.slice(1)}s`;
-    }
+    const as = query?.as || `${query?.model?.charAt(0).toLowerCase() + query?.model?.slice(1)}s`;
 
     return {
         $lookup: {
             from: `${query?.model?.toLowerCase()}s`,
             localField: query?.localField,
             foreignField: query?.foreignField,
-            as: query?.as,
+            as,
         },
     }
 }
@@ -123,10 +120,10 @@ export default function parseQuery(req) {
         try {
             const queryHandlers = {
                 include: (value) => {
-                    const include = parseQueryToJSON(value);
-                    recursiveKeyReplacement(include);
-                    const includeQueryParsed = extractQueriesFromJSON({ include });
-                    parsedQuery.push(...includeQueryParsed);
+                    const jsonQuery = parseQueryToJSON(value);
+                    recursiveKeyReplacement(jsonQuery);
+                    const includeQueries = extractQueriesFromJSON({ include: jsonQuery });
+                    parsedQuery.push(...includeQueries);
                 },
                 query: (value) => {
                     const query = parseQueryToJSON(value);
@@ -171,7 +168,7 @@ export default function parseQuery(req) {
             console.debug('🚀 ~ Final mongoose query:', parsedQuery);
             resolve(parsedQuery);
         } catch (error) {
-            console.debug('🚀 ~ Error mongoose query parser: ', error?.message);
+            console.error('🚀 ~ Error mongoose query parser: ', error?.message);
             reject([
                 {
                     msg: error.message
