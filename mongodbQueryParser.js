@@ -1,6 +1,6 @@
 'use strict';
 
-import { ObjectId } from 'mongodb';
+const { ObjectId } = require('mongodb');
 
 const MONGODB_OPERATORS = {
     gt: '$gt',      // Greater Than
@@ -111,7 +111,7 @@ const extractQueriesFromJSON = (json) => {
     return queries;
 };
 
-export default function parseQuery(req) {
+const parseQuery = (req) => {
     return new Promise((resolve, reject) => {
         console.debug('🚀 ~ Request Query: ', req?.query);
 
@@ -177,3 +177,5 @@ export default function parseQuery(req) {
         }
     });
 }
+
+module.exports = { parseQuery };

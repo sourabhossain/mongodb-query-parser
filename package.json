@@ -5,7 +5,7 @@
     "repository": "git@github.com:sourabhossain/mongodb-query-parser.git",
     "author": "Sourab Hossain <sourabhossain.fci@gmail.com>",
     "license": "MIT",
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
         "format": "prettier --write \"**/*.js\"",
         "lint": "eslint .",
