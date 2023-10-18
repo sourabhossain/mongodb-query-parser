@@ -17,7 +17,8 @@ const MONGODB_OPERATORS = {
     in: '$in',      // Inclusion
     notIn: '$nin',  // Not In
     expr: '$expr',  // Expression
-    match: '$match'  // Text Search Match
+    match: '$match',  // Text Search Match
+    elemMatch: '$elemMatch' // Array Element Match
 };  
 
 const parseQueryToJSON = (query) => {
