@@ -142,7 +142,7 @@ const parseQuery = (req) => {
                     return { $limit: parseInt(value) };
                 },
                 offset: (value) => {
-                    return { $offset: parseInt(value) };
+                    return { $skip: parseInt(value) };
                 },
                 sort: (value) => {
                     const sort = parseQueryToJSON(value);
